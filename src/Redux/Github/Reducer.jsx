@@ -1,44 +1,82 @@
-import {add_social_link, update_data, update_social_link } from "../actionTypes";
-const initial_state = {
-    data: {
-      name: "Deepak Maurya",
-      job: "Software Developer",
-      location: "Maharashtra, India",
-      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      socialLinks:[{
-        id: 1,title: "Linkdin",url: "https://linkedin.com/in/deepakmaurya47/"
-      }]
-    }
-  };
+import {
+  UPDATE_DATA,
+  ADD_SOCIAL_LINK,
+  UPDATE_SOCIAL_LINK,
+  FETCH_GITHUB_PROFILE_REQUEST,
+  FETCH_GITHUB_PROFILE_SUCCESS,
+  FETCH_GITHUB_PROFILE_FAILURE
+} from "../actionTypes";
 
-  const GithubReducer = (state = initial_state, action) => {
-    switch (action.type) {
-      case update_data:
-        return {
-          ...state,
-          data: action.payload
-        };
-        case add_social_link:
-          return {
-            ...state,
-            data: {
-              ...state.data,
-              socialLinks: [...state.data.socialLinks, action.payload]
-            }
-          };
-        case update_social_link:
-          return {
-            ...state,
-            data: {
-              ...state.data,
-              socialLinks: state.data.socialLinks.map(link =>
-                link.id === action.payload.id ? action.payload : link
-              )
-            }
-          };
-      default:
-        return state;
-    }
-  };
-  
-  export default GithubReducer;
+const initial_state = {
+  data: {
+    name: "",
+    job: "",
+    location: "",
+    bio: "",
+    socialLinks: [],
+    projects: [],
+    image :''
+  },
+  loading: false,
+  error: null
+};
+
+const GithubReducer = (state = initial_state, action) => {
+  switch (action.type) {
+    case UPDATE_DATA:
+      return {
+        ...state,
+        data: action.payload
+      };
+    case ADD_SOCIAL_LINK:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          socialLinks: [...state.data.socialLinks, action.payload]
+        }
+      };
+    case UPDATE_SOCIAL_LINK:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          socialLinks: state.data.socialLinks.map(link =>
+            link.id === action.payload.id ? action.payload : link
+          )
+        }
+      };
+    case FETCH_GITHUB_PROFILE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case FETCH_GITHUB_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: {
+          ...state.data,
+          name: action.payload.name,
+          location: action.payload.location,
+          bio: action.payload.bio,
+          image:action.payload.avatar_url,
+          socialLinks: [
+            ...state.data.socialLinks,
+            { id: 'github', url: action.payload.html_url }
+          ]
+        }
+      };
+    case FETCH_GITHUB_PROFILE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export default GithubReducer;

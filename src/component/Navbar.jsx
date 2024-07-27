@@ -23,6 +23,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -61,12 +62,15 @@ export default function Navbar() {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+            <NavLink to={'./'}>
             <Image
               w={'150px'}
               src={logo}
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               color={useColorModeValue("gray.800", "white")}
             />
+            </NavLink>
+            
 
             <Flex display={{ base: "none", md: "flex" }} ml={10}>
               <DesktopNav />

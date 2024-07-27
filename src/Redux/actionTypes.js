@@ -1,5 +1,6 @@
-export const background_update = 'background_update'
-export const foreground_color = 'foreground_color'
-export const update_data = 'update_data'
-export const add_social_link = 'add_social_link';
-export const update_social_link = 'update_social_link';
+export const UPDATE_DATA = "update_data";
+export const ADD_SOCIAL_LINK = "add_social_link";
+export const UPDATE_SOCIAL_LINK = "update_social_link";
+export const FETCH_GITHUB_PROFILE_REQUEST = "fetch_github_profile_request";
+export const FETCH_GITHUB_PROFILE_SUCCESS = "fetch_github_profile_success";
+export const FETCH_GITHUB_PROFILE_FAILURE = "fetch_github_profile_failure";

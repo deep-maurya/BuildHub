@@ -13,7 +13,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { update_data } from "../Redux/actionTypes";
+import { UPDATE_DATA } from "../Redux/actionTypes";
 
 export const Profile = () => {
   const toast = useToast();
@@ -45,7 +45,7 @@ export const Profile = () => {
 
   const handle_form_Submit = (e) => {
     e.preventDefault();
-    dispatch({ type: update_data, payload: value });
+    dispatch({ type: UPDATE_DATA, payload: value });
     //alert('Profile updated!');
 
     toast({
