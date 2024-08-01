@@ -43,24 +43,7 @@ export default function Navbar() {
           px={{ base: 4 }}
           align={"center"}
         >
-          <Flex
-            flex={{ base: 1, md: "auto" }}
-            ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
-          >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex>
+          
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
             <NavLink to={'./'}>
             <Image
@@ -72,46 +55,13 @@ export default function Navbar() {
             </NavLink>
             
 
-            <Flex display={{ base: "none", md: "flex" }} ml={10}>
-              <DesktopNav />
-            </Flex>
+           
           </Flex>
 
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-          >
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"#"}
-            >
-              Sign In
-            </Button>
-            <Button
-              as={"a"}
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"pink.400"}
-              href={"#"}
-              _hover={{
-                bg: "pink.300",
-              }}
-            >
-              Sign Up
-            </Button>
-          </Stack>
+         
         </Flex>
       </Container>
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
+     
     </Box>
   );
 }

@@ -1,114 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGithubProfile } from "../Redux/action";
 import axios from "axios";
-import { Box, Button, Container, Heading, Image, Input, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  Input,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { NavLink, useParams } from "react-router-dom";
+import { RESET_GITHUB_PROFILE } from "../Redux/actionTypes";
 
 const GithubFetch = () => {
+  const {github_id} = useParams();
   const [username, setUsername] = useState("");
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.github);
-
-  const handleUpdate = async () => {
-    dispatch(fetchGithubProfile(username));
-    // console.log(username)
-    // // const data = await axios.get(`https://api.github.com/users/${username}`)
-    // const data  = await axios.get(`https://api.github.com/users/${username}/repos`)
-    // console.log(data.data);
+  const removeUsername = () =>{ 
+    dispatch({type:RESET_GITHUB_PROFILE});
+  }
+  const searchUsername = async () => {
+    dispatch(fetchGithubProfile(github_id));
   };
 
+  useEffect(()=>{
+    searchUsername(github_id)
+  },[github_id])
+
   return (
-    <Box bg={'orange'}>
-        <Container maxW={'3xl'} bg={''}>
+    <Box style={{backgroundPosition:"center",backgroundSize:"cover",backgroundRepeat:"no-repeat",backgroundImage:"url('https://media.istockphoto.com/id/1395723007/vector/pink-orange-yellow-and-red-color-gradient-summer-defocused-blurred-motion-abstract.jpg?s=612x612&w=0&k=20&c=qf1HnidyUgJiMLa4bHHomssiu7jdNEL7j-ezmiFrGb8=')"}} >
+      <Container maxW={"3xl"} bg={""}>
         <Stack
           as={Box}
-          textAlign={'center'}
-        //   spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}>
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'}>
-            Enter You Github <br />
-            <Text as={'span'} color={'green.400'}>
-              Username
-            </Text>
-          </Heading>
-          <Input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter GitHub Username"
-            textAlign={'center'}
-            mb={0}
-          />
-          <Button mt={0} onClick={handleUpdate}>Fetch GitHub Profile</Button>
+          textAlign={"center"}
+          align={"center"}
+          //   spacing={{ base: 8, md: 14 }}
+          py={{ base: 20, md: 36 }}
+        >
+          
           {loading && <p>Loading...</p>}
           {error && <p>Error: {error}</p>}
-          {data.name!='' &&
-            <div>
-            <Image src={data.image}/>
-            <h3>Profile Data:</h3>
-            <p>Name: {data.name}</p>
-            <p>Location: {data.location}</p>
-            <p>Bio: {data.bio}</p>
-            <p>
-              GitHub:{" "}
-              <a
-                href={
-                  data.socialLinks.find((link) => link.id === "github")?.url
-                }
-              >
-                GitHub Profile
-              </a>
-            </p>
-          </div>
-          }
+          {data.name != "" && (
+            <Box align={"center"}>
+              <Image
+                mt={3}
+                mb={3}
+                style={{ borderRadius: "50%", width: "150px" }}
+                src={data.image}
+              />
+              <Text fontSize={"20px"} as={"b"}>
+                {data.name}
+              </Text>
+              <br/>
+              {data.bio!='' && <Text fontSize={"20px"} as={"b"}>
+                {data.bio}
+              </Text>}
+            </Box>
+          )}
         </Stack>
       </Container>
     </Box>
-    // <Box bg={'red'}>
-    //   <Container maxW={"container.xl"} bg={""} p={5}>
-    //     <Box marginLeft={'auto'} marginRight={'auto'} maxW={'md'} textAlign={'center'}>
-    //     <Heading
-    //         fontWeight={600}
-    //         fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-    //         lineHeight={'110%'}>
-    //         Make money from <br />
-    //         <Text as={'span'} color={'green.400'}>
-    //           your audience
-    //         </Text>
-    //       </Heading>
-    //       <Input
-    //         type="text"
-    //         value={username}
-    //         onChange={(e) => setUsername(e.target.value)}
-    //         placeholder="Enter GitHub Username"
-    //       />
-    //       <Button onClick={handleUpdate}>Fetch GitHub Profile</Button>
-    //       {loading && <p>Loading...</p>}
-    //       {error && <p>Error: {error}</p>}
-    //       {data.name!='' &&
-    //         <div>
-    //         <h3>Profile Data:</h3>
-    //         <p>Name: {data.name}</p>
-    //         <p>Location: {data.location}</p>
-    //         <p>Bio: {data.bio}</p>
-    //         <p>
-    //           GitHub:{" "}
-    //           <a
-    //             href={
-    //               data.socialLinks.find((link) => link.id === "github")?.url
-    //             }
-    //           >
-    //             GitHub Profile
-    //           </a>
-    //         </p>
-    //       </div>
-    //       }
-    //     </Box>
-    //   </Container>
-    // </Box>
   );
 };
 

@@ -4,7 +4,8 @@ import {
   UPDATE_SOCIAL_LINK,
   FETCH_GITHUB_PROFILE_REQUEST,
   FETCH_GITHUB_PROFILE_SUCCESS,
-  FETCH_GITHUB_PROFILE_FAILURE
+  FETCH_GITHUB_PROFILE_FAILURE,
+  RESET_GITHUB_PROFILE
 } from "../actionTypes";
 
 const initial_state = {
@@ -15,7 +16,8 @@ const initial_state = {
     bio: "",
     socialLinks: [],
     projects: [],
-    image :''
+    image :'',
+    repos:[],
   },
   loading: false,
   error: null
@@ -68,6 +70,22 @@ const GithubReducer = (state = initial_state, action) => {
           ]
         }
       };
+    case RESET_GITHUB_PROFILE:
+      return(
+        {
+          data: {
+            name: "",
+            job: "",
+            location: "",
+            bio: "",
+            socialLinks: [],
+            projects: [],
+            image :''
+          },
+          loading: false,
+          error: null
+        }
+      );
     case FETCH_GITHUB_PROFILE_FAILURE:
       return {
         ...state,

@@ -26,6 +26,9 @@ export const fetchGithubProfile = (username) => {
       const response = await axios.get(`https://api.github.com/users/${username}`);
       console.log(response.data);
       dispatch(fetchGithubProfileSuccess(response.data));
+      const repos = await axios.get(`https://api.github.com/users/${username}/repos`);
+      console.log(repos.data);
+      dispatch(fetchGithubProfileSuccess(response.data));
     } catch (error) {
       dispatch(fetchGithubProfileFailure(error.message));
     }
