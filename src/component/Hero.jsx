@@ -35,9 +35,7 @@ export default function Hero() {
           </Heading> */}
           <Image className='animate__animated animate__flipInY' src={logo} />
           <Text color={'gray.500'}>
-            Monetize your content by charging your most loyal readers and reward them
-            loyalty points. Give back to your loyal readers by granting them access to
-            your pre-releases and sneak-peaks.
+          BuildHub allows users to create professional portfolios using their GitHub ID. It seamlessly integrates with GitHub to showcase your projects and contributions. Future updates will bring additional features for an enhanced experience.
           </Text>
           <Stack
             direction={'column'}

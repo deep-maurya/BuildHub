@@ -45,7 +45,7 @@ export default function Navbar() {
         >
           
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <NavLink to={'./'}>
+            <NavLink to={'/'}>
             <Image
               w={'150px'}
               src={logo}

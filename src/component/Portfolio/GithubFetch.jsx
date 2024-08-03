@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGithubProfile } from "../Redux/action";
+import { fetchGithubProfile } from "../../Redux/action";
 import axios from "axios";
+import logo from '../../../public/logo.png'
 import {
   Box,
   Button,
@@ -10,11 +11,12 @@ import {
   Heading,
   Image,
   Input,
+  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { NavLink, useParams } from "react-router-dom";
-import { RESET_GITHUB_PROFILE } from "../Redux/actionTypes";
+import { RESET_GITHUB_PROFILE } from "../../Redux/actionTypes";
 
 const GithubFetch = () => {
   const {github_id} = useParams();
@@ -33,6 +35,10 @@ const GithubFetch = () => {
   },[github_id])
 
   return (
+    <>
+    {loading && <Text textAlign={"center"}>Loading</Text>}
+    {error && <Text textAlign={"center"}>Page Not found</Text>}
+    {data.name != "" && (
     <Box style={{backgroundPosition:"center",backgroundSize:"cover",backgroundRepeat:"no-repeat",backgroundImage:"url('https://media.istockphoto.com/id/1395723007/vector/pink-orange-yellow-and-red-color-gradient-summer-defocused-blurred-motion-abstract.jpg?s=612x612&w=0&k=20&c=qf1HnidyUgJiMLa4bHHomssiu7jdNEL7j-ezmiFrGb8=')"}} >
       <Container maxW={"3xl"} bg={""}>
         <Stack
@@ -42,10 +48,6 @@ const GithubFetch = () => {
           //   spacing={{ base: 8, md: 14 }}
           py={{ base: 20, md: 36 }}
         >
-          
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error}</p>}
-          {data.name != "" && (
             <Box align={"center"}>
               <Image
                 mt={3}
@@ -61,10 +63,11 @@ const GithubFetch = () => {
                 {data.bio}
               </Text>}
             </Box>
-          )}
+          
         </Stack>
       </Container>
-    </Box>
+    </Box>)}
+    </>
   );
 };
 
