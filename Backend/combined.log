@@ -1,0 +1,10 @@
+{"level":"info","message":"GET request received at /","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"info","message":"error","service":"user-service"}
+{"level":"error","message":"GET request received at /","service":"user-service"}
+{"level":"error","message":"GET request received at /","service":"user-service"}
