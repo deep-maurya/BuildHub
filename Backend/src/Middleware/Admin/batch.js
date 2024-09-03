@@ -46,24 +46,18 @@ const create_Batch = async(req,res) => {
 
 const All_batches = async (req, res) => {
     try {
-      
       const batches = await BatchModel.find().select("name");
-  
       const batchWithCoursesAndStudents = await Promise.all(
-        batches.map(async (batch) => {
-          
+        batches.map(async (batch) => { 
           const courses = await courseModel
             .find({ batchID: batch._id })
             .select("-__v -created_at")
             .populate("instructor", "name");
-  
           const enrollments = await EnrollmentModel.find({ batch: batch._id }).populate(
             "student",
             "name email"
           );
-  
           const students = enrollments.map((enrollment) => enrollment.student);
-
           return {
             ...batch.toObject(),
             stats: {

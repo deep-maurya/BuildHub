@@ -2,6 +2,7 @@
 import React from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { CourseListDrawer } from './CourseListDrawer';
 
 const Drawer = ({ open, onClose, batch }) => {
   return (
@@ -49,6 +50,15 @@ const Drawer = ({ open, onClose, batch }) => {
                     <span style={{ fontSize: "30px" }}>{batch?.stats?.totalStudents}</span>
                   </h3>
                 </div>
+
+                {batch?.courses && batch?.courses.length>0 && (<>
+                  <CourseListDrawer  courses={batch.courses}/>
+                </>)}
+                {batch?.courses && batch?.courses.length===0 && (<>
+                  <div className="text-center font-bold text-red p-4 bg-red-200">
+                    No courses in this Batch
+                  </div>
+                </>)}
                  
                 </div>
               </div>
