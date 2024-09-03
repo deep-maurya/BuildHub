@@ -36,9 +36,9 @@ const validate_Admin = async (req, res, next) => {
 
 
 const create_cookies = (req,res) =>{
-    const token = create_token({ u_id: req.userLoginData._id });
+    const token = create_token({ u_id: req.userLoginData._id },'60m');
       res.cookie("admin_token", token, {
-        httpOnly: true,
+        httpOnly: false,
         secure: false,
         sameSite: "Lax",
         maxAge: 3600000,

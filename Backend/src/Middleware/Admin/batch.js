@@ -38,7 +38,7 @@ const create_Batch = async(req,res) => {
     const data = new BatchModel({name:batchName})
     try {
         await data.save();
-        res.status(201).json({ status: 1, message: 'Batch Created successfully', data: req.courseData });
+        res.status(201).json({ status: 1, message: 'Batch Created successfully', data: data });
     } catch (error) {
         res.status(500).json({ status: 0, message: `An error occurred ${error.message}`, data:[]  });
     }

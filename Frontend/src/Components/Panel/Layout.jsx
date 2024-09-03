@@ -20,8 +20,8 @@ export const Layout = (props) => {
   // Define menu items for each role
   const menuItems = {
     admin: [
-      { name: 'Admin Home', icon: <HomeIcon />, path: '/dashboard' },
-      { name: 'Settings', icon: <SettingsIcon />, path: '/login' },
+      { name: 'Dashboard', icon: <HomeIcon />, path: '/admin/dashboard' },
+      { name: 'Batch', icon: <SettingsIcon />, path: '/admin/batch' },
       { name: 'Manage Users', icon: <UserIcon />, path: '/admin/users' },
     ],
     instructor: [
@@ -37,35 +37,35 @@ export const Layout = (props) => {
   };
 
   // Function to check if the link is active
-  const isActive = (path) => window.location.pathname === path;
-  console.log(window.location.pathname)
+  const isActive = (path) => `${window.location.pathname}` === path;
+  //console.log(window.location.pathname.split('/'))
 
   // Select menu items based on the role
   const items = menuItems[props.For] || [];
 
   useEffect(() => {
     const checkAuth = async () => {
-      const authToken = Cookies.get('auth_token');
+      const authToken = Cookies.get((props.For=='student')?'auth_token':'admin_token');
+      console.log(authToken)
       if (authToken) {
         try {
-          const response = await AxioPost('token_verify', {});
-          //console.log(response)
+          const response = await AxioPost((props.For=='student')?'token_verify':'token_verify_admin', {});
+          console.log(response)
           setAuthUser(response.data.user); // Set user data from response
           //console.log(props.For,response.data.user.role)
           if(props.For===response.data.user.role){
             setAuth(true);
           } else {
-            navigate('/login');
+            navigate('/');
           }
-           // Set auth status to true
         } catch (error) {
           console.error('Error verifying token:', error);
           setAuth(false); // Set auth status to false on error
-          navigate('/login'); // Redirect on error
+          navigate('/'); // Redirect on error
         }
       } else {
         setAuth(false);
-        navigate('/login');
+        navigate('/');
         //console.log("No auth token, redirecting to login");
       }
     };
@@ -84,22 +84,24 @@ export const Layout = (props) => {
       >
         <img className="p-3 self-center ml-auto mr-auto" width={'75%'} src={logo} alt="Logo" />
         <hr />
-        <nav className="p-0">
-          <ul style={{ padding: '0px' }}>
-            {items.map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className={`flex font-bold gap-4 rounded-none p-4 pl-5 hover:bg-violet-100 rounded block ${
-                    isActive(item.path) ? `bg-violet-100 border-l-4 border-l-violet-600` : ''
-                  }`}
-                >
-                  {item.icon} {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="flex flex-col content-between">
+          <nav className="p-0">
+            <ul style={{ padding: '0px' }}>
+              {items.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className={`flex font-bold gap-4 rounded-none p-4 pl-5 hover:bg-violet-100 rounded block ${
+                      isActive(item.path) ? `bg-violet-100 border-l-4 border-l-violet-600` : ''
+                    }`}
+                  >
+                    {item.icon} {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </aside>
 
       {/* Overlay for mobile when sidebar is open */}
@@ -150,10 +152,10 @@ export const Layout = (props) => {
           </header>
 
 
-          <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+          {/* <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 bg-gray-50" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
               <li className="inline-flex items-center">
-                <a href="#" className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <a href="#" className="inline-flex items-center text-sm font-medium text-gray-700">
                   <svg className="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                   </svg>
@@ -163,21 +165,21 @@ export const Layout = (props) => {
               <li>
                 <div className="flex items-center">
                   <svg className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
                   </svg>
-                  <a href="#" className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Templates</a>
+                  <a href="#" className="ms-1 text-sm font-medium text-gray-700  md:ms-2">Templates</a>
                 </div>
               </li>
               <li aria-current="page">
                 <div className="flex items-center">
                   <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
                   </svg>
                   <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
                 </div>
               </li>
             </ol>
-          </nav>
+          </nav> */}
 
 
           {/* Main Content */}

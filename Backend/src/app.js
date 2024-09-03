@@ -47,6 +47,27 @@ app.use('/token_verify',async(req,res)=>{
     res.status(401).json({ status: 0, message: 'Invalid token' });
 })
 
+app.use('/token_verify_admin',async(req,res)=>{
+    const token = req.cookies.admin_token;
+    //console.log(token)
+    if(token){
+        const data = await verify_token(token);
+        if(data.status){
+            const uid = data.decode.u_id
+            try {
+                const user = await UserModel.findOne({_id:uid},{__v:0,password:0,tokens:0});
+                if (!user) {
+                    return res.status(401).json({ status: 0, message: 'User not found' });
+                  }
+                return res.json({ status: 1, user });
+            } catch (error) {
+                
+            }
+        }
+    }
+    res.status(401).json({ status: 0, message: 'Invalid token' });
+})
+
 app.get("/",(req,res)=>{
     
     //logger.error('GET request received at /');

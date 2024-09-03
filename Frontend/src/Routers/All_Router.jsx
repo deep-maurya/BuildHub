@@ -11,6 +11,9 @@ import { HomePage } from '../Pages/HomePage';
 import { Dashboard } from '../User/Pages/Dashboard';
 import { Sessions } from '../User/Pages/Sessions';
 import { ProfilePage } from '../User/Pages/ProfilePage';
+import { DashboardAdmin } from '../Admin/Pages/DashboardAdmin';
+import { Batch } from '../Admin/Pages/Batch';
+import { TableTwo } from '../Admin/Components/TableTwo';
 export const All_Router = () => {
   return (
 
@@ -26,6 +29,9 @@ export const All_Router = () => {
 
       {/* Routes for Admin */}
       <Route path='/admin' element={<LoginPageAdmin />} />
+      <Route path='/admin/dashboard' element={<DashboardAdmin />} />
+      <Route path='/admin/batch' element={<Batch />} />
+      <Route path='/admin/test' element={<TableTwo />} />
 
       {/* Routes for Instructor */}
       <Route path='/instructor' element={<LoginPageInstructor />} />

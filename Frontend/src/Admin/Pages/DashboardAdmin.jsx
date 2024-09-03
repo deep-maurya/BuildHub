@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Layout } from '../../Components/Panel/Layout';
 import Calender from '../../Components/Utils/Calender';
 
-export const Dashboard = () => {
+export const DashboardAdmin = () => {
   // State to keep track of the active tab
   const [activeTab, setActiveTab] = useState('profile');
 
@@ -24,7 +24,7 @@ export const Dashboard = () => {
   
 
   return (
-    <Layout For='student'>
+    <Layout For='admin'>
       <div className="mb-4 font-bold  border-b border-gray-200">
         <ul className="flex flex-wrap text-sm bg-violet-100 font-bold text-center" role="tablist">
           <li className="me-2" role="presentation">
