@@ -87,7 +87,7 @@ export const DashboardAdmin = () => {
       </div>
       <div className='mb-5' id="default-styled-tab-content">
         <div
-          className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'profile' ? '' : 'hidden'}`}
+          className={`${activeTab === 'profile' ? '' : 'hidden'}`}
           id="styled-profile"
           role="tabpanel"
           aria-labelledby="profile-tab"
