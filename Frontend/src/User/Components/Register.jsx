@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AlertCircle, ArrowRight, CheckCircle } from 'lucide-react'
 import Swal from "sweetalert2";
 import { AxioPost } from "../../utils/AxiosUtils";
+import { BackgroundBackdrop } from "../../Components/HomePage/BackgroundBackdrop";
 
 export const Register = () => {
   const [otpBox, setOtpBox] = useState(false);
@@ -81,7 +82,8 @@ export const Register = () => {
     <>
     <section>
     <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-        <div className="xl:mx-auto xl:w-full xl:max-w-sm w-full md:mx-auto md:w-1/2 2xl:max-w-md">
+      <BackgroundBackdrop/>
+        <div className=" xl:mx-auto xl:w-full xl:max-w-sm w-full md:mx-auto md:w-1/2 2xl:max-w-md">
           <div className="mb-2 flex justify-center">
             {/* We can Place logo Here */}
           </div>
@@ -112,7 +114,7 @@ export const Register = () => {
             </div>
             </div>
         </div>}
-          <div className="border rounded-md p-5">
+          <div className="border bg-white rounded-md p-5">
             <form onSubmit={(e)=>{handleRegister(e)}} method="post">
               <div className="space-y-5">
                 <div>

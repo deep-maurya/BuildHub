@@ -53,7 +53,7 @@ export const Layout = (props) => {
       { name: 'Manage Users', icon: <UserIcon />, path: '/admin/users' },
     ],
     instructor: [
-      { name: 'Instructor Home', icon: <HomeIcon />, path: '/instructor/dashboard' },
+      { name: 'Dashboard', icon: <HomeIcon />, path: '/instructor/dashboard' },
       { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/courses' },
       { name: 'Profile', icon: <UserIcon />, path: '/instructor/profile' },
     ],
@@ -64,11 +64,8 @@ export const Layout = (props) => {
     ],
   };
 
-  // Function to check if the link is active
-  const isActive = (path) => `${window.location.pathname}` === path;
-  //console.log(window.location.pathname.split('/'))
 
-  // Select menu items based on the role
+  const isActive = (path) => `${window.location.pathname}` === path;
   const items = menuItems[props.For] || [];
 
   useEffect(() => {
@@ -81,8 +78,8 @@ export const Layout = (props) => {
         try {
           const response = await AxioPost((props.For=='student')?'token_verify':(((props.For=='admin')?'token_verify_admin':((props.For=='instructor')?'token_verify_instructor':"NA"))));
           //console.log(response)
-          setAuthUser(response.data.user); // Set user data from response
-          //console.log(props.For,response.data.user.role)
+          setAuthUser(response.data.user);
+          console.log(response.data.user)
           if(props.For===response.data.user.role){
             setAuth(true);
           } else {
@@ -90,8 +87,8 @@ export const Layout = (props) => {
           }
         } catch (error) {
           console.error('Error verifying token:', error);
-          setAuth(false); // Set auth status to false on error
-          navigate('/'); // Redirect on error
+          setAuth(false);
+          navigate('/'); 
         }
       } else {
         setAuth(false);
@@ -167,7 +164,7 @@ export const Layout = (props) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              {authUser && <span className="font-bold">Deepak</span>}
+              {authUser && <span className="font-bold">{authUser.name}</span>}
               <button onClick={handleLogout} className={`bg-blue-500 text-white p-2 rounded`}>
                 LogOut
               </button>

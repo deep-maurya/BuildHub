@@ -3,13 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AlertCircle, ArrowRight } from 'lucide-react';
 import { AxioPost } from '../../utils/AxiosUtils';
+import { BackgroundBackdrop } from './BackgroundBackdrop';
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [is_disable, set_disable] = useState(false);
-    const [role, setRole] = useState('admin'); // Default role
+    const [role, setRole] = useState('student'); // Default role
     const navigate = useNavigate();
 
     const handle_login = async (e) => {
@@ -76,7 +77,7 @@ export const Login = () => {
                         {/* Place logo here if needed */}
                     </div>
                     <h2 className="text-center mb-5 text-2xl font-bold leading-tight text-black">
-                        <div className="mb-2">LOGIN </div>
+                        <div className="mb-2"> <u>LOGIN</u>  </div>
                         <hr />
                     </h2>
                     {error && (
@@ -87,24 +88,25 @@ export const Login = () => {
                             </div>
                         </div>
                     )}
-                    <div className="border rounded-md p-5">
+                    <BackgroundBackdrop/>
+                    <div className="border bg-white rounded-md p-5">
                         <form onSubmit={handle_login} method='post'>
                             <div className="space-y-5">
                                 <div className="flex justify-between gap-4">
                                     {/* Role Selection Radio Buttons */}
-                                    <div className="border p-3 flex items-center">
+                                    <div className="border rounded-md p-3 flex items-center">
                                         <input
-                                            id="radio-admin"
+                                            id="radio-student"
                                             type="radio"
-                                            value="admin"
+                                            value="student"
                                             name="role"
                                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                            checked={role === 'admin'}
+                                            checked={role === 'student'}
                                             onChange={(e) => setRole(e.target.value)}
                                         />
-                                        <label htmlFor="radio-admin" className="ms-2 text-sm font-medium text-gray-900">Admin</label>
+                                        <label htmlFor="radio-student" className="ms-2 text-sm font-medium text-gray-900">Student</label>
                                     </div>
-                                    <div className="border p-3 flex items-center">
+                                    <div className="border rounded-md p-3 flex items-center">
                                         <input
                                             id="radio-instructor"
                                             type="radio"
@@ -116,17 +118,17 @@ export const Login = () => {
                                         />
                                         <label htmlFor="radio-instructor" className="ms-2 text-sm font-medium text-gray-900">Instructor</label>
                                     </div>
-                                    <div className="border p-3 flex items-center">
+                                    <div className="border rounded-md p-3 flex items-center">
                                         <input
-                                            id="radio-student"
+                                            id="radio-admin"
                                             type="radio"
-                                            value="student"
+                                            value="admin"
                                             name="role"
                                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                            checked={role === 'student'}
+                                            checked={role === 'admin'}
                                             onChange={(e) => setRole(e.target.value)}
                                         />
-                                        <label htmlFor="radio-student" className="ms-2 text-sm font-medium text-gray-900">Student</label>
+                                        <label htmlFor="radio-admin" className="ms-2 text-sm font-medium text-gray-900">Admin</label>
                                     </div>
                                 </div>
 

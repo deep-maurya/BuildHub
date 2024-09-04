@@ -3,7 +3,6 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RegisterPage } from '../User/Pages/RegisterPage';
 import { ForgetPasswordPage } from '../Pages/ForgetPasswordPage';
-import { PagenotFound } from '../Components/HomePage/PagenotFound';
 import { HomePage } from '../Pages/HomePage';
 import { Dashboard } from '../User/Pages/Dashboard';
 import { Sessions } from '../User/Pages/Sessions';
@@ -13,6 +12,7 @@ import { Batch } from '../Admin/Pages/Batch';
 import { TableTwo } from '../Admin/Components/TableTwo';
 import { DashboardInstructor } from '../Instructor/Pages/DashboardInstructor';
 import { LoginPage } from '../Pages/LoginPage';
+import { PageNotFoundPage } from '../Pages/PageNotFoundPage';
 export const All_Router = () => {
   return (
 
@@ -42,7 +42,7 @@ export const All_Router = () => {
 
       
       {/* Fallback Route */}
-      <Route path='/*' element={<PagenotFound />} />
+      <Route path='/*' element={<PageNotFoundPage />} />
     </Routes>
    
   );

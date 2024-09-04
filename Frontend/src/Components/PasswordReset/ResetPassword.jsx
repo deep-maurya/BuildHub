@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AxioPost } from '../../utils/AxiosUtils';
 import { LucideLoader, MailWarning, Verified } from 'lucide-react'
+import { BackgroundBackdrop } from '../HomePage/BackgroundBackdrop';
 export const ResetPassword = () => {
     const { token } = useParams();
     const [email, setEmail] = useState('');
@@ -103,6 +104,7 @@ export const ResetPassword = () => {
 
 <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <BackgroundBackdrop/>
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
           <div className="mb-2 flex justify-center">
             {/* We can Place logo Here */}
@@ -128,7 +130,7 @@ export const ResetPassword = () => {
                 </div>
                 </div>
             </div>}
-            <div className="border rounded-md p-5">
+            <div className="border bg-white rounded-md p-5">
                 {token?(<>
                     {loading && <div className="rounded-md border-b-4 mt-5 mb-5 border-yellow-500 bg-yellow-100 p-4">
                         <div className="flex flex-col text-center justify-center space-x-4">

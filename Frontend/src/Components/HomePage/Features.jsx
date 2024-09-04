@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { IoAnalyticsSharp, IoLogoBitcoin, IoSearchSharp } from 'react-icons/io5'
 import { ReactElement } from 'react'
+import { KeyIcon, LocateFixedIcon, LockKeyholeIcon } from 'lucide-react'
 
 
 
@@ -42,9 +43,9 @@ export default function Features() {
             p={2}
             alignSelf={'flex-start'}
             rounded={'md'}>
-            Our Story
+            Fetaures
           </Text>
-          <Heading>A digital Product design agency</Heading>
+          <Heading>Login Features to all Roles</Heading>
           <Text color={'gray.500'} fontSize={'lg'}>
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
             eirmod tempor invidunt ut labore
@@ -55,19 +56,19 @@ export default function Features() {
               <StackDivider borderColor={useColorModeValue('gray.100', 'gray.700')} />
             }>
             <Feature
-              icon={<Icon as={IoAnalyticsSharp} color={'yellow.500'} w={5} h={5} />}
+              icon={<Icon as={KeyIcon} color={'yellow.500'} w={5} h={5} />}
               iconBg={useColorModeValue('yellow.100', 'yellow.900')}
-              text={'Business Planning'}
+              text={'Student Login'}
             />
             <Feature
-              icon={<Icon as={IoLogoBitcoin} color={'green.500'} w={5} h={5} />}
+              icon={<Icon as={LockKeyholeIcon} color={'green.500'} w={5} h={5} />}
               iconBg={useColorModeValue('green.100', 'green.900')}
-              text={'Financial Planning'}
+              text={'Instructor Login'}
             />
             <Feature
-              icon={<Icon as={IoSearchSharp} color={'purple.500'} w={5} h={5} />}
+              icon={<Icon as={LocateFixedIcon} color={'purple.500'} w={5} h={5} />}
               iconBg={useColorModeValue('purple.100', 'purple.900')}
-              text={'Market Analysis'}
+              text={'Admin Login'}
             />
           </Stack>
         </Stack>
