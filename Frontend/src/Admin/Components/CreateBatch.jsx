@@ -14,7 +14,7 @@ const CreateBatch = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState("Active");
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

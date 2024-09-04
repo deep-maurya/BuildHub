@@ -14,6 +14,7 @@ import { ProfilePage } from '../User/Pages/ProfilePage';
 import { DashboardAdmin } from '../Admin/Pages/DashboardAdmin';
 import { Batch } from '../Admin/Pages/Batch';
 import { TableTwo } from '../Admin/Components/TableTwo';
+import { DashboardInstructor } from '../Instructor/Pages/DashboardInstructor';
 export const All_Router = () => {
   return (
 
@@ -35,6 +36,7 @@ export const All_Router = () => {
 
       {/* Routes for Instructor */}
       <Route path='/instructor' element={<LoginPageInstructor />} />
+      <Route path='/instructor/dashboard' element={<DashboardInstructor />} />
 
       {/* Common Routes */}
       <Route path='/' element={<HomePage />} />

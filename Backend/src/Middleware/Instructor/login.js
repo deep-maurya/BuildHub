@@ -38,7 +38,7 @@ const validate_Instructor = async (req, res, next) => {
 const create_cookies_instructor = (req,res) =>{
     const token = create_token({ u_id: req.userLoginData._id },'60m');
       res.cookie("instructor_token", token, {
-        httpOnly: true,
+        httpOnly: false,
         secure: false,
         sameSite: "Lax",
         maxAge: 3600000,

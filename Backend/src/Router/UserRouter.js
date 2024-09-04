@@ -4,7 +4,7 @@ const u_mid = require("../Middleware/User/userMiddleware")
 const c_mid = require("../Middleware/common")
 const { verify_token } = require("../controller/JWT");
 const { Personal_Details } = require("../Middleware/User/User");
-const { My_All_sessions } = require("../Middleware/User/Session");
+const { My_All_sessions, My_Today_sessions } = require("../Middleware/User/Session");
 require("dotenv").config()
 const { google } = require('googleapis');
 const { google_Auth, google_Auth_callback } = require("../Middleware/User/GoogleAuth");
@@ -78,7 +78,12 @@ UserRouter.get('/sessions',
     u_mid.check_login_or_not_student,
     c_mid.check_roles(['student']),
     My_All_sessions
+)
 
+UserRouter.get('/today_sessions',
+    u_mid.check_login_or_not_student,
+    c_mid.check_roles(['student']),
+    My_Today_sessions
 )
 
 

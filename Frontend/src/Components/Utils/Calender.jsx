@@ -7,32 +7,16 @@ import listPlugin from '@fullcalendar/list';
 import moment from 'moment';
 
 const Calendar = ({ sessions }) => {
-  // Define colors for each subject
-  const subjectColors = {
-    Math: '#FF5733',
-    Science: '#33FF57',
-    History: '#3357FF',
-    English: '#F1C40F',
-    // Add more subjects and their colors here
-  };
-
-  // Convert sessions into FullCalendar-compatible events
   const events = sessions.map((session) => {
     const start = moment(session.startTime).format();
     const end = moment(session.endTime).format();
-    
-    // Check if the event spans across days
     const isMultiDay = moment(end).diff(moment(start), 'days') > 0;
-
-    // Get color based on subject
-    const color = subjectColors[session.subject] || '#4A90E2'; // Default color if subject not found
-
     return {
       title: session.title,
       start: start,
       end: end,
       allDay: isMultiDay,
-      color: "teal", // Assign color here
+      color: session.color || "blue",
     };
   });
 

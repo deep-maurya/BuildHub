@@ -27,7 +27,7 @@ export const Login = () => {
                     timer: 1500
                   });
                 setTimeout(()=>{
-                    navigate('/session');
+                    navigate('/instructor/dashboard');
                 },1500)
                 
             }

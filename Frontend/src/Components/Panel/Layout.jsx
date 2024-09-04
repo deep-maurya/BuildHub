@@ -25,7 +25,7 @@ export const Layout = (props) => {
       { name: 'Manage Users', icon: <UserIcon />, path: '/admin/users' },
     ],
     instructor: [
-      { name: 'Instructor Home', icon: <HomeIcon />, path: '/instructor/home' },
+      { name: 'Instructor Home', icon: <HomeIcon />, path: '/instructor/dashboard' },
       { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/courses' },
       { name: 'Profile', icon: <UserIcon />, path: '/instructor/profile' },
     ],
@@ -45,27 +45,29 @@ export const Layout = (props) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const authToken = Cookies.get((props.For=='student')?'auth_token':'admin_token');
-      console.log(authToken)
+      //console.log("kk")
+      const token_select = ((props.For=='student')?'auth_token':(((props.For=='admin')?'admin_token':((props.For=='instructor')?'instructor_token':"NA"))))
+      const authToken = Cookies.get(token_select);
+      //console.log(authToken)
       if (authToken) {
         try {
-          const response = await AxioPost((props.For=='student')?'token_verify':'token_verify_admin', {});
+          const response = await AxioPost((props.For=='student')?'token_verify':(((props.For=='admin')?'token_verify_admin':((props.For=='instructor')?'token_verify_instructor':"NA"))));
           console.log(response)
           setAuthUser(response.data.user); // Set user data from response
-          //console.log(props.For,response.data.user.role)
+          console.log(props.For,response.data.user.role)
           if(props.For===response.data.user.role){
             setAuth(true);
           } else {
-            navigate('/');
+            //navigate('/');
           }
         } catch (error) {
           console.error('Error verifying token:', error);
           setAuth(false); // Set auth status to false on error
-          navigate('/'); // Redirect on error
+          //navigate('/'); // Redirect on error
         }
       } else {
         setAuth(false);
-        navigate('/');
+        //navigate('/');
         //console.log("No auth token, redirecting to login");
       }
     };
