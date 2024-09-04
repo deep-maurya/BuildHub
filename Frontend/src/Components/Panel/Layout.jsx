@@ -4,7 +4,8 @@ import logo from '/logo.png';
 import { HomeIcon, SettingsIcon, UserIcon, FileTextIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { AxioPost } from '../../utils/AxiosUtils';
+import { AxioGet, AxioPost } from '../../utils/AxiosUtils';
+import Swal from 'sweetalert2';
 
 export const Layout = (props) => {
   const [template_color, set_Template_color] = useState(props.color);
@@ -17,6 +18,33 @@ export const Layout = (props) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleLogout =async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to logout",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        try {
+          const logout = await  AxioGet('logout');
+        } catch (error) {
+        }
+        setTimeout(() => {
+          navigate("/login")
+        }, 100);
+        Swal.fire({
+          title: "Logout!",
+          text: "Logout Successfull",
+          icon: "success",
+          timer: 1500
+        });
+      }
+    });
+  }
   // Define menu items for each role
   const menuItems = {
     admin: [
@@ -52,26 +80,25 @@ export const Layout = (props) => {
       if (authToken) {
         try {
           const response = await AxioPost((props.For=='student')?'token_verify':(((props.For=='admin')?'token_verify_admin':((props.For=='instructor')?'token_verify_instructor':"NA"))));
-          console.log(response)
+          //console.log(response)
           setAuthUser(response.data.user); // Set user data from response
-          console.log(props.For,response.data.user.role)
+          //console.log(props.For,response.data.user.role)
           if(props.For===response.data.user.role){
             setAuth(true);
           } else {
-            //navigate('/');
+            navigate('/');
           }
         } catch (error) {
           console.error('Error verifying token:', error);
           setAuth(false); // Set auth status to false on error
-          //navigate('/'); // Redirect on error
+          navigate('/'); // Redirect on error
         }
       } else {
         setAuth(false);
-        //navigate('/');
+        navigate('/');
         //console.log("No auth token, redirecting to login");
       }
     };
-
     checkAuth();
   }, [navigate]);
 
@@ -116,7 +143,7 @@ export const Layout = (props) => {
 
       <div className="flex flex-1">
         <div className="flex-1 flex flex-col">
-          {/* Header */}
+          
           <header className="bg-white shadow p-4 flex items-center justify-between">
             {/* Toggle Button for Mobile */}
             <div className="flex">
@@ -140,51 +167,12 @@ export const Layout = (props) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="border rounded p-2"
-              />
-              
               {authUser && <span className="font-bold">Deepak</span>}
-              <button className={`bg-blue-500 text-white p-2 rounded`}>
-                Log Out
+              <button onClick={handleLogout} className={`bg-blue-500 text-white p-2 rounded`}>
+                LogOut
               </button>
             </div>
           </header>
-
-
-          {/* <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 bg-gray-50" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-              <li className="inline-flex items-center">
-                <a href="#" className="inline-flex items-center text-sm font-medium text-gray-700">
-                  <svg className="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-                  </svg>
-                  Home
-                </a>
-              </li>
-              <li>
-                <div className="flex items-center">
-                  <svg className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-                  </svg>
-                  <a href="#" className="ms-1 text-sm font-medium text-gray-700  md:ms-2">Templates</a>
-                </div>
-              </li>
-              <li aria-current="page">
-                <div className="flex items-center">
-                  <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-                  </svg>
-                  <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
-                </div>
-              </li>
-            </ol>
-          </nav> */}
-
-
-          {/* Main Content */}
           <main className="flex-1 p-4 bg-gray-100 overflow-auto">
             {props.children}
           </main>

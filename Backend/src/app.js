@@ -27,6 +27,26 @@ app.use('/admin',AdminRouter)
 //Instrauctor Router
 app.use('/instructor',InstructorRouter)
 
+app.use('/logout', (req, res) => {
+    let msg = 'Logged out successfully';
+    const cookieOptions = {
+        path: '/',
+        httpOnly: true,
+        secure: false,
+        sameSite: 'Lax'
+    };
+    const cookieNames = ['admin_token', 'auth_token', 'instructor_token'];
+    cookieNames.forEach(cookieName => {
+        if (req.cookies[cookieName]) {
+            res.clearCookie(cookieName, cookieOptions);
+        }
+    });
+    res.json({ message: msg });
+});
+
+
+
+
 app.use('/token_verify',async(req,res)=>{
     const token = req.cookies.auth_token;
     if(token){
