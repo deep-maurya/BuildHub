@@ -1,31 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from '../../Components/Panel/Layout';
 import Calender from '../../Components/Utils/Calender';
 import { TodaySchedule } from '../Components/TodaySchedule';
+import { Loading } from '../../Components/Utils/Loading';
+import { AxioGet } from '../../utils/AxiosUtils';
 
 export const Dashboard = () => {
-  // State to keep track of the active tab
   const [activeTab, setActiveTab] = useState('schedule');
-
-  // Function to handle tab change
+  const [loading,setLoading] = useState(true)
+  const [sessions,setSessions] = useState([])
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const sessions = [
-    {
-      title: 'Math',
-      startTime: '2024-09-01T10:00:00', // ISO format time
-      endTime: '2024-09-01T11:30:00',
-      color:"red"
-    },{
-      title: 'History',
-      startTime: '2024-09-01T11:00:00', // ISO format time
-      endTime: '2024-09-01T12:00:00',
-      
-    }
-  ];
-  
+  useEffect(() => {
+    const get_sessions = async () => {
+      try {
+        const response = await AxioGet(`user/sessions`);
+        console.log(response.data); // Displaying the response data
+        setLoading(false);
+        setSessions(response.data.sessions)
+        //setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    };
 
+    get_sessions();
+  }, []);
   return (
     <Layout For='student'>
       <div className="mb-4 font-bold  border-b border-gray-200">
@@ -41,7 +43,7 @@ export const Dashboard = () => {
               aria-controls="schedule"
               aria-selected={activeTab === 'schedule'}
             >
-              Today Schedule
+              Sprint Plan
             </button>
           </li>
           <li className="me-2" role="presentation">
@@ -55,7 +57,7 @@ export const Dashboard = () => {
               aria-controls="dashboard"
               aria-selected={activeTab === 'dashboard'}
             >
-              Sprint Plan
+              Today Schedule
             </button>
           </li>
         </ul>
@@ -67,7 +69,8 @@ export const Dashboard = () => {
           role="tabpanel"
           aria-labelledby="profile-tab"
         >
-          <TodaySchedule/>
+          {loading && <Loading/>}
+          {!loading && <Calender sessions={sessions}/>}
         </div>
         <div
           className={` rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'dashboard' ? '' : 'hidden'}`}
@@ -75,27 +78,7 @@ export const Dashboard = () => {
           role="tabpanel"
           aria-labelledby="dashboard-tab"
         >
-          <Calender sessions={sessions}/>
-        </div>
-        <div
-          className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'settings' ? '' : 'hidden'}`}
-          id="styled-settings"
-          role="tabpanel"
-          aria-labelledby="settings-tab"
-        >
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            This is some placeholder content the <strong className="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
-          </p>
-        </div>
-        <div
-          className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === 'contacts' ? '' : 'hidden'}`}
-          id="styled-contacts"
-          role="tabpanel"
-          aria-labelledby="contacts-tab"
-        >
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            This is some placeholder content the <strong className="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
-          </p>
+          <TodaySchedule/>
         </div>
       </div>
       

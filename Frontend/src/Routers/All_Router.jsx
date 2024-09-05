@@ -13,6 +13,8 @@ import { TableTwo } from '../Admin/Components/TableTwo';
 import { DashboardInstructor } from '../Instructor/Pages/DashboardInstructor';
 import { LoginPage } from '../Pages/LoginPage';
 import { PageNotFoundPage } from '../Pages/PageNotFoundPage';
+import { ProfilePageInstructor } from '../Instructor/Pages/ProfilePageInstructor';
+import { CoursePageInstructor } from '../Instructor/Pages/CoursePageInstructor copy';
 export const All_Router = () => {
   return (
 
@@ -33,7 +35,8 @@ export const All_Router = () => {
 
       {/* Routes for Instructor */}
       <Route path='/instructor/dashboard' element={<DashboardInstructor />} />
-
+      <Route path='/instructor/profile' element={<ProfilePageInstructor />} />
+      <Route path='/instructor/course' element={<CoursePageInstructor />} />
       {/* Common Routes */}
       <Route path='/' element={<HomePage />} />
       <Route path='/forget_password' element={<ForgetPasswordPage />} />

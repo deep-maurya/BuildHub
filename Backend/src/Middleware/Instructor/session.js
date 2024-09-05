@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { SessionModel } = require("../../Models/Session");
 const { courseModel } = require("../../Models/Course");
 const { BatchModel } = require("../../Models/Batch");
-const { convertToISOFormat } = require("../../Utils/TimeConvert");
+const { convertToISOFormat, IndianTime } = require("../../Utils/TimeConvert");
 const validator = require("validator");
 const { UserModel } = require("../../Models/User");
 const { google } = require('googleapis');
@@ -21,33 +21,34 @@ const session_create_precheck = (req, res, next) => {
   const { sessionTitle, startDateTime, endDateTime, course_id, batch_id } = req.body;
   const status = 0;
   if (!sessionTitle || !startDateTime || !endDateTime || !course_id || !batch_id) {
-    return res.status(400).json({ status,message: 'All fields are required.' });
+    return res.status(201).json({ status,message: 'All fields are required.' });
   }
-
+// console.log(startDateTime);
+// console.log(endDateTime)
   if (!sessionTitle || !validator.isAlpha(sessionTitle.replace(/\s+/g, ""), "en-US")) {
     msg = "Invalid or missing session title. Title should contain only letters.";
-    return res.status(400).json({ message: msg });
+    return res.status(201).json({ message: msg });
   }
 
   if (!course_id || !validator.isMongoId(course_id)) {
     msg = "Invalid or missing course ID. Please provide a valid ObjectId.";
-    return res.status(400).json({ message: msg });
+    return res.status(201).json({ message: msg });
   }
 
   if (!batch_id || !validator.isMongoId(batch_id)) {
     msg = "Invalid or missing batch ID. Please provide a valid ObjectId.";
-    return res.status(400).json({ message: msg });
+    return res.status(201).json({ message: msg });
   }
 
   const startTime = new Date(convertToISOFormat(startDateTime));
   const endTime = new Date(convertToISOFormat(endDateTime));
-
+//console.log(startTime)
   if (!startTime || !endTime) {
-    return res.status(400).json({ status,message: 'Invalid date format for start or end time.' });
+    return res.status(201).json({ status,message: 'Invalid date format for start or end time.' });
   }
   const now = new Date();
   if (startTime < now || endTime < now || endTime<startTime) {
-      return res.status(400).json({ status,message: 'Start or end time cannot be in the past or end cannot be before start.' });
+      return res.status(201).json({ status,message: 'Start or end time cannot be in the past or end cannot be before start.' });
   }
   req.body.startDateTime = startTime;
   req.body.endDateTime = endTime;
@@ -61,17 +62,17 @@ const session_create_form_validate = async (req, res, next) => {
   try {
     const existingSession = await SessionModel.findOne({ title: sessionTitle, course_id, batch_id });
     if (existingSession) {
-      return res.status(409).json({status, message: 'Session title already exists.' });
+      return res.status(201).json({status, message: 'Session title already exists.' });
     }
     const instructor_id = req.instructor.instructor_id;//this came from validate login
     const course = await courseModel.findOne({_id:course_id,instructor:instructor_id});
     if (!course) {
-      return res.status(404).json({ status,message: 'Invalid course or Instrcutor not assigned for this course' });
+      return res.status(201).json({ status,message: 'Invalid course or Instrcutor not assigned for this course' });
     }
     const batch = await BatchModel.findById(batch_id);
     //console.log(batch)
     if (!course || !batch) {
-      return res.status(404).json({ status,message: 'Invalid course or batch ID.' });
+      return res.status(201).json({ status,message: 'Invalid course or batch ID.' });
     }
     next();
   } catch (error) {
@@ -123,7 +124,7 @@ const create_new_session = async (req, res) => {
     for (const enrollment of enrollments) {
       const student = enrollment.student;
       if (student.tokens && student.tokens.length > 0) {
-        const { accessToken, refreshToken } = student.tokens[0]; // Assuming we take the first token if multiple
+        const { accessToken, refreshToken } = student.tokens[0];
         oauth2Client.setCredentials({
           access_token: accessToken,
           refresh_token: refreshToken,
@@ -133,8 +134,8 @@ const create_new_session = async (req, res) => {
         const event = {
           summary: sessionTitle,
           start: {
-            dateTime: new Date(startDateTime).toISOString(), // Ensure the time is in ISO format
-            timeZone: 'Asia/Kolkata', // Set to Indian timezone
+            dateTime: new Date(startDateTime).toISOString(),
+            timeZone: 'Asia/Kolkata',
           },
           end: {
             dateTime: new Date(endDateTime).toISOString(),
@@ -163,7 +164,35 @@ const create_new_session = async (req, res) => {
 
     res.status(201).json({status:1, message: 'Session created successfully.', session: newSession });
   } catch (error) {
-    res.status(500).json({status, message: 'Failed to create session.', error: error.message });
+    res.status(201).json({status, message: 'Failed to create session.', error: error.message });
+  }
+};
+
+
+const get_all_Session = async (req, res) => {
+  const status = 0;
+  try {
+      const instructor_id = req.instructor.instructor_id;
+      const courses = await courseModel.find({ instructor: instructor_id }).select('_id');
+      if (courses.length === 0) {
+          return res.status(404).json({status, message: 'No courses found for this instructor.' });
+      }
+      const courseIds = courses.map(course => course._id);
+      const sessions = await SessionModel.find({ course_id: { $in: courseIds } },{__v:0})
+          .populate('course_id', 'title')
+          .populate('batch_id', 'name')
+          .sort({ startTime: 1 });
+      const sessionsWithIST = sessions.map(session => {
+            return {
+              ...session._doc,
+              startTime: IndianTime(session.startTime, 'yyyy-MM-dd HH:mm:ss'),
+              endTime: IndianTime(session.endTime,'yyyy-MM-dd HH:mm:ss')
+            };
+      });
+      res.status(200).json({status:1,session:sessionsWithIST});
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({status, message: 'An error occurred while fetching sessions.' });
   }
 };
 
@@ -171,5 +200,6 @@ module.exports = {
   session_create_precheck,
   session_create_form_validate,
   time_availability,
-  create_new_session
+  create_new_session,
+  get_all_Session
 };

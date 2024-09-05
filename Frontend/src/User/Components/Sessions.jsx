@@ -5,6 +5,7 @@ import { CalendarCheck, User2Icon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { SessionDetails } from './SessionDetails';
 import { Loading } from '../../Components/Utils/Loading';
+import { convertUTCToIST } from '../../utils/DateConvert';
 
 export const Session = () => {
   const { session_id } = useParams();
@@ -18,7 +19,7 @@ export const Session = () => {
       if (authToken) {
         try {
           const response = await AxioGet('user/sessions');
-          setSessions(response.data.sessions); // Assuming sessions is an array
+          setSessions(response.data.sessions);
           setLoading(false);
         } catch (error) {
           console.error('Error fetching sessions:', error);
@@ -63,7 +64,7 @@ export const Session = () => {
                             <div className="flex items-center gap-2">
                               <CalendarCheck className="text-violet-600" />
                               <span className=" font-medium text-gray-600">
-                                {session.startTime || 'Session Date'}
+                                { convertUTCToIST(session.startTime) || 'Session Date'}
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
@@ -74,13 +75,12 @@ export const Session = () => {
                             </div>
                           </div>
                         </Link>
-                        <button className='mr-5 rounded-lg px-4 text-green-600 font-bold py-2 bg-green-100'>Present</button>
                       </div>
                     </li>
                   ))}
                 </ol>
               ) : (
-                <p className="text-gray-600">No sessions available.</p>
+                <p className="text-gray-600 font-bold p-5 text-center">No sessions available.</p>
               )}
             </div>
           )}

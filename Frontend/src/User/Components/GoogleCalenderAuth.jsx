@@ -57,7 +57,7 @@ export const GoogleCalenderAuth = () => {
         }
       },[code])
   return (
-    <div className="w-full p-4 text-center bg-white border rounded-lg shadow sm:p-8">
+    <div className="w-full p-4 mb-5 text-center bg-white border rounded-lg shadow sm:p-8">
     <div className="mx-auto max-w-7xl mb-5">
         <div className="mx-auto max-w-2xl text-center">
             <h3 className="mt-3 text-lg font-bold leading-tight text-black  lg:mt-5">

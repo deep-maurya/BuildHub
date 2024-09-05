@@ -74,7 +74,6 @@ export const TodaySchedule = () => {
                             </div>
                           </div>
                         </Link>
-                        <button className='mr-5 rounded-lg px-4 text-green-600 font-bold py-2 bg-green-100'>Present</button>
                       </div>
                     </li>
                   ))}

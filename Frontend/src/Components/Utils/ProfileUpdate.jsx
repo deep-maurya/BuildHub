@@ -10,8 +10,18 @@ export const ProfileUpdate = (props) => {
 
   useEffect(() => {
     const updateData = async () => {
+      let endpoint = '';
+      switch (props.For) {
+        case 'student':
+          endpoint = 'user'
+          break;
+        case 'instructor':
+          endpoint = 'instructor'
+        default:
+          break;
+      }
       try {
-        const response = await AxioGet('user/');
+        const response = await AxioGet(`${endpoint}/`);
         console.log(response.data); // Displaying the response data
         setLoading(false);
         setUserData(response.data);
@@ -33,7 +43,7 @@ export const ProfileUpdate = (props) => {
   }
 
   return (
-    <>{userData.tokens.length === 0 && <GoogleCalenderAuth />}
+    <>{userData.tokens.length === 0 && props.for==='student' && <GoogleCalenderAuth />}
     <>
     <h1 className='text-3xl font-black'>Profile</h1>
     <div className="p-6 font-semibold max-w-md mt-3 bg-white space-y-4">

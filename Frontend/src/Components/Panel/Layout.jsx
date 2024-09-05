@@ -54,7 +54,7 @@ export const Layout = (props) => {
     ],
     instructor: [
       { name: 'Dashboard', icon: <HomeIcon />, path: '/instructor/dashboard' },
-      { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/courses' },
+      { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/course' },
       { name: 'Profile', icon: <UserIcon />, path: '/instructor/profile' },
     ],
     student: [
@@ -166,7 +166,7 @@ export const Layout = (props) => {
             <div className="flex items-center space-x-4">
               {authUser && <span className="font-bold">{authUser.name}</span>}
               <button onClick={handleLogout} className={`bg-blue-500 text-white p-2 rounded`}>
-                LogOut
+                Logout
               </button>
             </div>
           </header>

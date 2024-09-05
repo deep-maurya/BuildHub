@@ -38,8 +38,8 @@ const My_All_sessions = async (req, res, next) => {
             email: session.course_id.instructor.email,
           } : 'No instructor details available'
         } : 'No course details available',
-        startTime: IndianTime(session.startTime,'dd-MM-yyyy HH:mm:ss'),
-        endTime: IndianTime(session.endTime,'dd-MM-yyyy HH:mm:ss'),
+        startTime: session.startTime,
+        endTime: session.endTime,
       }));
   
       res.status(200).json({

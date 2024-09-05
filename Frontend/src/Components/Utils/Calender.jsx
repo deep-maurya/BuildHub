@@ -7,25 +7,22 @@ import listPlugin from '@fullcalendar/list';
 import moment from 'moment';
 
 const Calendar = ({ sessions }) => {
+  //console.log(sessions)
   const events = sessions.map((session) => {
-    const start = moment(session.startTime).format();
-    const end = moment(session.endTime).format();
-    const isMultiDay = moment(end).diff(moment(start), 'days') > 0;
     return {
       title: session.title,
-      start: start,
-      end: end,
-      allDay: isMultiDay,
+      start: session.startTime,
+      end: session.endTime,
       color: session.color || "blue",
     };
   });
-
+//console.log(events)
   return (
     <div className="p-4 bg-white shadow-lg rounded-lg w-full max-w-full mx-auto overflow-hidden">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         initialView="timeGridWeek"
-        timeZone="Asia/Kolkata"
+        // timeZone="Asia/Kolkata"
         headerToolbar={{
           left: 'title',
           //center: 'title',
