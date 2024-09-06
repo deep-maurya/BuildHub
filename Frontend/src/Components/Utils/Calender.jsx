@@ -24,9 +24,9 @@ const Calendar = ({ sessions }) => {
         initialView="timeGridWeek"
         // timeZone="Asia/Kolkata"
         headerToolbar={{
-          left: 'title',
+          left: 'prev,next today',
           //center: 'title',
-          right: 'today,timeGridWeek,timeGridDay,listWeek',
+          right: 'timeGridWeek,timeGridDay,listWeek',
         }}
         events={events}
         editable={false}

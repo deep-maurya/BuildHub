@@ -7,7 +7,7 @@ import Batch from '../Components/Batch'
 export const CoursePageInstructor = () => {
   
   return (
-    <Layout For='instructor'>
+    <Layout For={"instructor"}>
           <Batch/>
     </Layout>
   )

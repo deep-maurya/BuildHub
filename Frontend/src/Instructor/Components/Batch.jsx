@@ -95,7 +95,7 @@ const Batch = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
-          {batches.map((batch) =>
+          {batches.length!=0 && batches.map((batch) =>
             batch.courses.map((course) => (
               <div key={course.courseId} className=" bg-white p-4">
                 <div className="flex text-center items-center justify-between">
@@ -112,6 +112,11 @@ const Batch = () => {
               </div>
             ))
           )}
+          {batches.length===0 && <>
+          <div className="bg-white font-bold text-center p-5">
+            <h1>No courses assigned to you</h1>
+          </div>
+          </>}
         </div>
       )}
 

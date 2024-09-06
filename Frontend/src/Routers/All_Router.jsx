@@ -15,6 +15,7 @@ import { LoginPage } from '../Pages/LoginPage';
 import { PageNotFoundPage } from '../Pages/PageNotFoundPage';
 import { ProfilePageInstructor } from '../Instructor/Pages/ProfilePageInstructor';
 import { CoursePageInstructor } from '../Instructor/Pages/CoursePageInstructor copy';
+import { SessionsPageInstructor } from '../Instructor/Pages/SessionsPageInstructor';
 export const All_Router = () => {
   return (
 
@@ -37,6 +38,8 @@ export const All_Router = () => {
       <Route path='/instructor/dashboard' element={<DashboardInstructor />} />
       <Route path='/instructor/profile' element={<ProfilePageInstructor />} />
       <Route path='/instructor/course' element={<CoursePageInstructor />} />
+      <Route path='/instructor/session' element={<SessionsPageInstructor />} />
+      
       {/* Common Routes */}
       <Route path='/' element={<HomePage />} />
       <Route path='/forget_password' element={<ForgetPasswordPage />} />

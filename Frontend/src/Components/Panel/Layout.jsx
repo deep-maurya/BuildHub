@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { AxioGet, AxioPost } from '../../utils/AxiosUtils';
 import Swal from 'sweetalert2';
+import { menuItems } from './Menu';
 
 export const Layout = (props) => {
   const [template_color, set_Template_color] = useState(props.color);
@@ -46,23 +47,7 @@ export const Layout = (props) => {
     });
   }
   // Define menu items for each role
-  const menuItems = {
-    admin: [
-      { name: 'Dashboard', icon: <HomeIcon />, path: '/admin/dashboard' },
-      { name: 'Batch', icon: <SettingsIcon />, path: '/admin/batch' },
-      { name: 'Manage Users', icon: <UserIcon />, path: '/admin/users' },
-    ],
-    instructor: [
-      { name: 'Dashboard', icon: <HomeIcon />, path: '/instructor/dashboard' },
-      { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/course' },
-      { name: 'Profile', icon: <UserIcon />, path: '/instructor/profile' },
-    ],
-    student: [
-      { name: 'Dashboard', icon: <HomeIcon />, path: '/dashboard' },
-      { name: 'Lectures', icon: <FileTextIcon />, path: '/session' },
-      { name: 'Profile', icon: <UserIcon />, path: '/profile' },
-    ],
-  };
+  
 
 
   const isActive = (path) => `${window.location.pathname}` === path;
