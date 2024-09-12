@@ -1,4 +1,4 @@
-import { FileTextIcon, HomeIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { BookA, BookOpenTextIcon, FileTextIcon, HomeIcon, SettingsIcon, UserIcon } from "lucide-react";
 
 export const  menuItems = {
     admin: [
@@ -8,8 +8,8 @@ export const  menuItems = {
     ],
     instructor: [
       { name: 'Dashboard', icon: <HomeIcon />, path: '/instructor/dashboard' },
-      { name: 'Courses', icon: <FileTextIcon />, path: '/instructor/course' },
-      { name: 'Sessions', icon: <UserIcon />, path: '/instructor/session' },
+      { name: 'Courses', icon: <BookA />, path: '/instructor/course' },
+      { name: 'Sessions', icon: <BookOpenTextIcon />, path: '/instructor/session' },
       { name: 'Profile', icon: <UserIcon />, path: '/instructor/profile' },
       
     ],

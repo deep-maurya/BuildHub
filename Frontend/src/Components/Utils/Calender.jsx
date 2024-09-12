@@ -4,7 +4,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import moment from 'moment';
 
 const Calendar = ({ sessions }) => {
   //console.log(sessions)
@@ -13,7 +12,7 @@ const Calendar = ({ sessions }) => {
       title: session.title,
       start: session.startTime,
       end: session.endTime,
-      color: session.color || "blue",
+      color: session.color || '#8163c3',
     };
   });
 //console.log(events)

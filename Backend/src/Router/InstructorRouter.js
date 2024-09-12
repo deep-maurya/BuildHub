@@ -60,10 +60,7 @@ BATCH RELATED ROUTES START FROM HERE
 InstructorRouter.get('/batch',
     check_login_or_not_instructor,
     check_roles(['instructor']),
-    all_batch_to_instructor,
-    (req,res)=>{
-        res.json({messege:"done"})
-    }
+    all_batch_to_instructor
 )
 /* 
 BATCH RELATED ROUTES END HERE

@@ -60,10 +60,10 @@ const session_create_form_validate = async (req, res, next) => {
   const { sessionTitle, course_id, batch_id } = req.body;
   const status = 0;
   try {
-    const existingSession = await SessionModel.findOne({ title: sessionTitle, course_id, batch_id });
-    if (existingSession) {
-      return res.status(201).json({status, message: 'Session title already exists.' });
-    }
+    // const existingSession = await SessionModel.findOne({ title: sessionTitle, course_id, batch_id });
+    // if (existingSession) {
+    //   return res.status(201).json({status, message: 'Session title already exists.' });
+    // }
     const instructor_id = req.instructor.instructor_id;//this came from validate login
     const course = await courseModel.findOne({_id:course_id,instructor:instructor_id});
     if (!course) {
