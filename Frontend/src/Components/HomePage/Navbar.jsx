@@ -12,11 +12,11 @@ const menuItems = [
   },
   {
     name: 'About',
-    href: '#',
+    href: '/about',
   },
   {
     name: 'Contact',
-    href: '#',
+    href: '/contact',
   },
 ]
 
@@ -88,9 +88,9 @@ export function Navbar() {
                 <div className="mt-6">
                   <nav className="grid gap-y-4">
                     {menuItems.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50"
                       >
                         <span className="ml-3 text-base font-medium text-gray-900">
@@ -99,7 +99,7 @@ export function Navbar() {
                         <span>
                           <ChevronRight className="ml-3 h-4 w-4" />
                         </span>
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
