@@ -10,7 +10,7 @@ import {
   useColorModeValue,
   createIcon,
 } from '@chakra-ui/react'
-import { Link } from 'lucide-react'
+import bg_image from '../../../public/back_2.jpg'
 
 export function Home() {
   return (
@@ -19,7 +19,7 @@ export function Home() {
       
       <div 
         style={{
-            backgroundImage: "url(./public/back_2.jpg)",
+            backgroundImage: `url(${bg_image})`,
             backgroundSize:"cover",
             backgroundRepeat:"no-repeat",
             backgroundPosition:"center"
