@@ -173,7 +173,6 @@ export const SessionDetails = (props) => {
           <div className="mt-5">
             {activeTab === 'notes' && (
               <div>
-                <h3 className="text-xl font-semibold mb-2">Notes</h3>
                 <ReactQuill 
                   value={notes} 
                   onChange={handleNotesChange} 
@@ -192,7 +191,7 @@ export const SessionDetails = (props) => {
             )}
 
             {activeTab === 'video' && (
-              <div className='bg-blue-100 rounded-md px-4 py-2'>
+              <div className='bg-blue-100 rounded-md px-5 py-3'>
                 <p className='font-bold'>Videos Help Student to Revise the Session again whenever required</p>
               </div>
             )}
