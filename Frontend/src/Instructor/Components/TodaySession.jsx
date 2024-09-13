@@ -21,8 +21,8 @@ export const TodaySession = ({sessions}) => {
               <span className="bg-gray-100 text-bold text-gray-800 text-xs  me-2 px-2.5 py-0.5 rounded">{session.batch_id.name}</span>
               <h3 className='font-black text-neutral-500 text-2xl'>{session.title}</h3>
               <div className="flex gap-5 font-medium text-neutral-500">
-              <p>Start Time: {new Date(session.startTime).toLocaleTimeString()}</p>
-              <p>End Time: {new Date(session.endTime).toLocaleTimeString()}</p>
+              <p> <small>Start Time:</small> {new Date(session.startTime).toLocaleTimeString()}</p>
+              <p> <small>End Time:</small> {new Date(session.endTime).toLocaleTimeString()}</p>
               </div>
             </li>
           ))}

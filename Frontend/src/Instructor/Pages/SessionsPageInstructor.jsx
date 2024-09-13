@@ -49,9 +49,9 @@ export const SessionsPageInstructor = () => {
                       <span className="bg-gray-100 text-bold text-gray-800 text-xs me-2 px-2.5 py-0.5 rounded">{session.batch_id.name}</span>
                       <h3 className='font-black text-neutral-500 text-2xl'>{session.title}</h3>
                       <div className="flex gap-5 font-medium text-neutral-500">
-                        <p>Date: {new Date(session.startTime).toLocaleDateString('en-GB')}</p>
-                        <p>Start Time: {new Date(session.startTime).toLocaleTimeString()}</p>
-                        <p>End Time: {new Date(session.endTime).toLocaleTimeString()}</p>
+                        <p> <small>Date:</small> {new Date(session.startTime).toLocaleDateString('en-GB')}</p>
+                        <p> <small>Start Time:</small>  {new Date(session.startTime).toLocaleTimeString()}</p>
+                        <p> <small>End Time:</small>  {new Date(session.endTime).toLocaleTimeString()}</p>
                       </div>
                     </div>
                     <Link to={`/instructor/session/${session._id}`} className="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
@@ -69,7 +69,7 @@ export const SessionsPageInstructor = () => {
           )}
         </>
       )}
-      {!loading && session_id !== undefined && <SessionDetails />}
+      {!loading && session_id !== undefined && <SessionDetails session_id={session_id}/>}
     </Layout>
   );
 };

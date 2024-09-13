@@ -196,10 +196,52 @@ const get_all_Session = async (req, res) => {
   }
 };
 
+
+
+
+
+const get_session_details = async (req, res, next) => {
+  const instructorId = req.instructor.instructor_id;
+  const sessionId = req.params.sessionId;
+  const status = 0;
+  if (!sessionId || !mongoose.Types.ObjectId.isValid(sessionId)) {
+      return res.status(400).json({status, message: 'Session ID is required or Invalid Session ID' });
+  }
+
+  try {
+      // Find the session by ID
+      const session = await SessionModel.findById(sessionId).populate('course_id batch_id');
+      
+      if (!session) {
+          return res.status(404).json({status, message: 'Session not found' });
+      }
+      const course = await courseModel.findById(session.course_id._id);
+      if (!course) {
+          return res.status(404).json({status, message: 'Course not found' });
+      }
+      if (!course.instructor.equals(instructorId)) {
+          return res.status(403).json({status, message: 'Forbidden: You are not authorized to access this session' });
+      }
+      res.status(200).json({
+          status:1,
+          title: session.title,
+          startTime: IndianTime(session.startTime, 'yyyy-MM-dd HH:mm:ss'),
+          endTime: IndianTime(session.endTime, 'yyyy-MM-dd HH:mm:ss'),
+          course: course.title,
+          batch: session.batch_id
+      });
+      
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({status, message: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   session_create_precheck,
   session_create_form_validate,
   time_availability,
   create_new_session,
-  get_all_Session
+  get_all_Session,
+  get_session_details
 };
