@@ -17,6 +17,8 @@ import { ProfilePageInstructor } from '../Instructor/Pages/ProfilePageInstructor
 import { SessionsPageInstructor } from '../Instructor/Pages/SessionsPageInstructor';
 import { CoursePageInstructor } from '../Instructor/Pages/CoursePageInstructor';
 import { SessionDetails } from '../Instructor/Components/SessionDetails';
+import { AboutUsPage } from '../Pages/AboutUsPage';
+import { ContactUsPage } from '../Pages/ContactUsPage';
 export const All_Router = () => {
   return (
 
@@ -47,6 +49,8 @@ export const All_Router = () => {
       <Route path='/forget_password' element={<ForgetPasswordPage />} />
       <Route path='/forget_password/:token' element={<ForgetPasswordPage />} />
       <Route path='/profile' element={<ProfilePage />} />
+      <Route path='/contact' element={<ContactUsPage />} />
+      <Route path='/about' element={<AboutUsPage />} />
 
       
       {/* Fallback Route */}
