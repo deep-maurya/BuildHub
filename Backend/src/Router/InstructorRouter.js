@@ -1,7 +1,7 @@
 const {Router} = require("express");
 const { validate_Instructor, create_cookies_instructor, check_login_or_not_instructor } = require("../Middleware/Instructor/login");
 const { validate_login, check_roles } = require("../Middleware/common");
-const { session_create_precheck, session_create_form_validate, time_availability, create_new_session, get_all_Session, get_session_details } = require("../Middleware/Instructor/session");
+const { session_create_precheck, session_create_form_validate, time_availability, create_new_session, get_all_Session, get_session_details, session_update, session_update_precheck } = require("../Middleware/Instructor/session");
 const { all_batch_to_instructor } = require("../Middleware/Instructor/Batch");
 const { Personal_Details_instructor } = require("../Middleware/Instructor/Instructor");
 
@@ -53,6 +53,13 @@ InstructorRouter.get('/session/:sessionId',
     check_login_or_not_instructor,
     check_roles(['instructor']),
     get_session_details,
+);
+
+InstructorRouter.post('/session/:sessionId',
+    check_login_or_not_instructor,
+    check_roles(['instructor']),
+    session_update_precheck,
+    session_update,
 );
 /* 
 SESSION RELATED ROUTES END HERE

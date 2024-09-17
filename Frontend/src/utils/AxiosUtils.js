@@ -32,3 +32,4 @@ export const AxioGet = async (endpoint, params = {}, withCredentials = true) => 
     throw error;
   }
 };
+

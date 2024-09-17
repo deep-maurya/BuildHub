@@ -23,9 +23,9 @@ const session_create_precheck = (req, res, next) => {
   if (!sessionTitle || !startDateTime || !endDateTime || !course_id || !batch_id) {
     return res.status(201).json({ status,message: 'All fields are required.' });
   }
-// console.log(startDateTime);
-// console.log(endDateTime)
-  if (!sessionTitle || !validator.isAlpha(sessionTitle.replace(/\s+/g, ""), "en-US")) {
+  // console.log(startDateTime);
+  // console.log(endDateTime)
+  if (!sessionTitle || !validator.isAlphanumeric(sessionTitle.replace(/\s+/g, ""), "en-US")) {
     msg = "Invalid or missing session title. Title should contain only letters.";
     return res.status(201).json({ message: msg });
   }
@@ -42,13 +42,34 @@ const session_create_precheck = (req, res, next) => {
 
   const startTime = new Date(convertToISOFormat(startDateTime));
   const endTime = new Date(convertToISOFormat(endDateTime));
-//console.log(startTime)
+  //console.log(startTime)
   if (!startTime || !endTime) {
     return res.status(201).json({ status,message: 'Invalid date format for start or end time.' });
   }
-  const now = new Date();
-  if (startTime < now || endTime < now || endTime<startTime) {
-      return res.status(201).json({ status,message: 'Start or end time cannot be in the past or end cannot be before start.' });
+  // uncomment if you want instructor to create only future sessions
+  // const now = new Date();
+  // if (startTime < now || endTime < now || endTime<startTime) {
+  //     return res.status(201).json({ status,message: 'Start or end time cannot be in the past or end cannot be before start.' });
+  // }
+  req.body.startDateTime = startTime;
+  req.body.endDateTime = endTime;
+  next();
+};
+
+const session_update_precheck = (req, res, next) => {
+  const { sessionTitle, startDateTime, endDateTime } = req.body;
+  const status = 0;
+  if (!sessionTitle || !startDateTime || !endDateTime) {
+    return res.status(201).json({ status,message: 'All fields are required.' });
+  }
+  if (!sessionTitle || !validator.isAlphanumeric(sessionTitle.replace(/\s+/g, ""), "en-US")) {
+    msg = "Invalid or missing session title. Title should contain only letters.";
+    return res.status(201).json({ message: msg });
+  }
+  const startTime = new Date(convertToISOFormat(startDateTime));
+  const endTime = new Date(convertToISOFormat(endDateTime));
+  if (!startTime || !endTime) {
+    return res.status(201).json({ status,message: 'Invalid date format for start or end time.' });
   }
   req.body.startDateTime = startTime;
   req.body.endDateTime = endTime;
@@ -107,10 +128,7 @@ const create_new_session = async (req, res) => {
   const { sessionTitle, startDateTime, endDateTime, course_id, batch_id } = req.body;
   const status = 0;
   try {
-    const course = await courseModel.findById(course_id).populate('instructor'); 
-    const courseName = course ? course.title : 'Unknown Course';
-    const instructorName = course && course.instructor ? course.instructor.name : 'Unknown Instructor'; 
-
+    
     const newSession = new SessionModel({
       title: sessionTitle,
       startTime: startDateTime,
@@ -119,48 +137,51 @@ const create_new_session = async (req, res) => {
       batch_id
     });
     await newSession.save();
-
-    const enrollments = await EnrollmentModel.find({ batch: batch_id }).populate('student');
-    for (const enrollment of enrollments) {
-      const student = enrollment.student;
-      if (student.tokens && student.tokens.length > 0) {
-        const { accessToken, refreshToken } = student.tokens[0];
-        oauth2Client.setCredentials({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
+    // This code for directly creating session in student google calender if they provide consent
+    // const course = await courseModel.findById(course_id).populate('instructor'); 
+    // const courseName = course ? course.title : 'Unknown Course';
+    // const instructorName = course && course.instructor ? course.instructor.name : 'Unknown Instructor'; 
+    // const enrollments = await EnrollmentModel.find({ batch: batch_id }).populate('student');
+    // for (const enrollment of enrollments) {
+    //   const student = enrollment.student;
+    //   if (student.tokens && student.tokens.length > 0) {
+    //     const { accessToken, refreshToken } = student.tokens[0];
+    //     oauth2Client.setCredentials({
+    //       access_token: accessToken,
+    //       refresh_token: refreshToken,
+    //     });
         
-        const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-        const event = {
-          summary: sessionTitle,
-          start: {
-            dateTime: new Date(startDateTime).toISOString(),
-            timeZone: 'Asia/Kolkata',
-          },
-          end: {
-            dateTime: new Date(endDateTime).toISOString(),
-            timeZone: 'Asia/Kolkata',
-          },
-          description: `Session for course: ${courseName} by ${instructorName}`,
-          reminders: {
-            useDefault: false,
-            overrides: [
-              { method: 'popup', minutes: 10 },
-              { method: 'popup', minutes: 5 }, 
-            ],
-          },
-        };
-        try {
-          await calendar.events.insert({
-            calendarId: 'primary', // Default calendar
-            resource: event,
-          });
-          console.log(`Event created for student ${student.email}`);
-        } catch (calendarError) {
-          console.error(`Failed to create event for ${student.email}: ${calendarError.message}`);
-        }
-      }
-    }
+    //     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+    //     const event = {
+    //       summary: sessionTitle,
+    //       start: {
+    //         dateTime: new Date(startDateTime).toISOString(),
+    //         timeZone: 'Asia/Kolkata',
+    //       },
+    //       end: {
+    //         dateTime: new Date(endDateTime).toISOString(),
+    //         timeZone: 'Asia/Kolkata',
+    //       },
+    //       description: `Session for course: ${courseName} by ${instructorName}`,
+    //       reminders: {
+    //         useDefault: false,
+    //         overrides: [
+    //           { method: 'popup', minutes: 10 },
+    //           { method: 'popup', minutes: 5 }, 
+    //         ],
+    //       },
+    //     };
+    //     try {
+    //       await calendar.events.insert({
+    //         calendarId: 'primary', // Default calendar
+    //         resource: event,
+    //       });
+    //       console.log(`Event created for student ${student.email}`);
+    //     } catch (calendarError) {
+    //       console.error(`Failed to create event for ${student.email}: ${calendarError.message}`);
+    //     }
+    //   }
+    // }
 
     res.status(201).json({status:1, message: 'Session created successfully.', session: newSession });
   } catch (error) {
@@ -237,11 +258,40 @@ const get_session_details = async (req, res, next) => {
   }
 };
 
+
+const session_update = async (req, res, next) => {
+  const sessionId = req.params.sessionId;
+  const { sessionTitle, startDateTime, endDateTime } = req.body;
+  const status = 0;
+  try {
+    const updatedSession = await SessionModel.findByIdAndUpdate(
+      sessionId,
+      {
+        title: sessionTitle,
+        startTime: startDateTime,
+        endTime: endDateTime
+      },
+      { new: true }
+    );
+
+    if (!updatedSession) {
+      return res.status(404).json({ status, message: 'Session not found.' });
+    }
+
+    res.status(200).json({ status: 1, message: 'Session updated successfully.', session: updatedSession });
+  } catch (error) {
+    res.status(500).json({ status, message: 'Failed to update session.', error: error.message });
+  }
+};
+
+
 module.exports = {
   session_create_precheck,
   session_create_form_validate,
   time_availability,
   create_new_session,
   get_all_Session,
-  get_session_details
+  get_session_details,
+  session_update,
+  session_update_precheck
 };

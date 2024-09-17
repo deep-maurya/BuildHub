@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import noaccess from '../../../public/website.png';
 import { Loading } from '../../Components/Utils/Loading';
-import { AxioGet } from '../../utils/AxiosUtils'; // Assuming AxioPut is configured for PUT requests
+import {AxioPost,AxioGet } from '../../utils/AxiosUtils';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { formatDateTime } from '../../utils/DateConvert';
+import Swal from 'sweetalert2';
 
 export const SessionDetails = (props) => {
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,7 @@ export const SessionDetails = (props) => {
       }
     };
     loadSessionDetails();
-  }, [session_id]);
+  }, [session_id,]);
 
   const handleNotesChange = (value) => {
     setNotes(value);
@@ -53,16 +55,31 @@ export const SessionDetails = (props) => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await AxioGet(`instructor/session/${session_id}`, {
-        title: sessionData.title,
-        startTime: sessionData.startTime,
-        endTime: sessionData.endTime,
+      const response = await AxioPost(`instructor/session/${session_id}`, {
+        sessionTitle: sessionData.title,
+        startDateTime: formatDateTime(sessionData.startTime),
+        endDateTime:formatDateTime(sessionData.endTime),
       });
+      console.log(response)
+      setSessionData({ ...sessionData,startTime:formatDateTime(sessionData.startTime),endTime:formatDateTime(sessionData.endTime)});
       if (response.data.status) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: response.data.message,
+          showConfirmButton: false,
+          timer: 3500,
+        });
         setIsEditing(false);
-        alert('Session details updated successfully');
       } else {
         setError('Failed to update session details');
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          text: 'Failed to update session details',
+          showConfirmButton: false,
+          timer: 3500,
+        });
       }
     } catch (error) {
       setError('Something went wrong, unable to save changes.');

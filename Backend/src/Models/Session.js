@@ -17,6 +17,13 @@ const SessionSchema = new Schema({
         ref: 'Batch',
         required: true
     },
+    notes : {
+        type : String
+    },
+    session_video : {
+        type : String,
+        default:null
+    },
     startTime: {
         type: Date,
         required: true
